@@ -1,0 +1,1 @@
+# manages the animation sequences and transitions
