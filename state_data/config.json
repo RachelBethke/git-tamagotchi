@@ -1,0 +1,49 @@
+{
+    "states": {
+        "very happy": {
+            "min_pushes" : 4,
+            "min_tokens": 15,
+            "max_days": 0
+        },
+        "happy": {
+            "min_pushes" : 1,
+            "min_tokens": 10,
+            "max_days": 0
+        },
+        "neutral": {
+            "min_pushes" : 0,
+            "min_tokens": 5,
+            "max_days": 3
+        },
+        "sad": {
+            "min_pushes" : 0,
+            "min_tokens": 0,
+            "max_days": 7
+        },
+        "please push code omg": {
+            "min_pushes" : 0,
+            "min_tokens": 0,
+            "max_days": 10
+        },
+        "gone": {
+            "min_pushes" : 0,
+            "min_tokens": 0,
+            "max_days": 11
+        }
+    },
+    "update_int_seconds": 10,
+    "default_pushes":0,
+    "defaul_tokens":2,
+    "event_state": {
+        "push_event": "excited"
+    },
+    "sprites": {
+        "very happy": "sprites/sprite_images/happysprite.png",
+        "happy": "sprites/sprite_images/happysprite.png",
+        "neutral": "sprites/sprite_images/neutralSprite.png",
+        "sad": "sprites/sprite_images/sadbbysprite.png",
+        "please push code omg": "sprites/sprite_images/sadSprite.png",
+        "gone": ""
+    }
+}
+
