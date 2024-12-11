@@ -10,6 +10,7 @@ parent_dir = os.path.dirname(current_dir)
 root_dir = os.path.dirname(parent_dir)  # Go up one more level to the project root
 sys.path.insert(0, root_dir)
 from sprites.display import show_sprite, SpriteWidget, QApplication
+from pet_states.state_updater import update_pet_state, load_json, save_json
 
 #TODO: make this a terminal process?
 GIT_USERNAME = 'RachelBethke' #add rkb76 later
@@ -40,8 +41,6 @@ def get_last_push_real():
         print(f"Response content: {response.content}")
         return None
     events = response.json()
-
-    # Find the first PushEvent
     for i in events:
         if i['type'] == 'PushEvent':
             return i #events (?)
@@ -90,12 +89,24 @@ def watch_pushes(sprite_call):
             print(f"New push detected: {event}")
             sprite_call() 
         time.sleep(INTERVAL)
-
+        
 def process_push(push, un):
     """
     Process new push data to update current state file
     """
-    pass
+    pet_state = load_json('state_data/pet_state.json')
+    last_event_id = None
+    while True:
+        event = get_last_push()
+        if event and event['id'] != last_event_id:
+            last_event_id = event['id']
+            now = datetime.now().isoformat()
+            pet_state['pushes'].append(now)
+            pet_state['tokens'] += 1
+            save_json('state_data/pet_state.json', pet_state)
+
+        update_pet_state()
+        time.sleep(INTERVAL)
 
 def update_log():
     """ 

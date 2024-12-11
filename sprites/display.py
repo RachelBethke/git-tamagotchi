@@ -3,6 +3,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt, QTimer
 import sys
 import random
+import signal
 
 class SpriteWidget(QWidget):
     def __init__(self, parent=None):
@@ -20,17 +21,25 @@ class SpriteWidget(QWidget):
 
         # pixmap label creation
         self.label = QLabel(self)
-        pixmap = QPixmap('sprites/sprite_images/eggSprite.png')
+        pixmap = QPixmap('sprites/sprite_images/eggSprite.png') #eggSprite.png')
         if pixmap.isNull():
             print("sprite didn't load")
             return
         else:
             print("sprite loaded")
+        
+        #just make sure pngs are flush, needed this for egg but not full size
+        scaled_pixmap = pixmap.scaled(
+             pixmap.width() * 2, 
+             pixmap.height() * 2, 
+             Qt.KeepAspectRatio,
+             #Qt.SmoothTransformation     #makes it blurry
+        )
 
-        self.label.setPixmap(pixmap)
+        self.label.setPixmap(scaled_pixmap) #scaled_pixmap
         self.label.adjustSize()
-        self.setFixedSize(pixmap.size()) #size of the widget to the size of the pixmap
-        self.move(100, 100) #window pos 
+        self.setFixedSize(scaled_pixmap.size()) #size of the widget to the size of the pixmap
+        self.move(15,780)     #50,800) #window pos 
         self.timer = QTimer()
         #self.timer.timeout.connect(self.move_sprite)
         self.timer.start(1000) #moves every second
@@ -50,6 +59,9 @@ def show_sprite():
     app = QApplication.instance()
     if app is None:
         app = QApplication(sys.argv)
+
+    #ctrl C doesnt cause an error with this, still doesnt work tho
+    signal.signal(signal.SIGINT, lambda *args: app.quit()) 
 
     sprite = SpriteWidget()
     sprite.show()
